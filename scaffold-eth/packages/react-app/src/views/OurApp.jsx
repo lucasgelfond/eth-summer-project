@@ -25,13 +25,13 @@ function OurApp({ address, localContracts, mainnetProvider }) {
   const [hasAccess, setHasAccess] = useState();
   const [didMount, setDidMount] = useState(true);
   const APIURL = "http://localhost:8080/api";
-  const valueAmount = 0.000001;
+  const valueAmount = 1000000000000;
 
   const gridStyle = {
     width: "33%",
     textAlign: "center",
   };
-  const artistDict = { "Flying Lotus": "0xd9837d0b546345f2Bd5749C7Ff4Ce5035e0B7828" };
+  const artistDict = { "Flying Lotus": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266" };
 
   let contractOptions = localContracts ? Object.keys(localContracts) : [];
   const [selectedContract, setSelectedContract] = useState();
@@ -60,9 +60,10 @@ function OurApp({ address, localContracts, mainnetProvider }) {
       return result;
     }
   };
-  function artistButton(artist) {
+  const artistButton = async(artist) => {
     setCurrentArtist(artist);
     setCurrentArtistAddress(artistDict[artist]);
+  	return artistDict[artist];
   }
 
   const getErc20Info = async () => {
@@ -133,7 +134,7 @@ function OurApp({ address, localContracts, mainnetProvider }) {
   };
   const lookupArtist = async artist => {};
   const setStartingConditions = async () => {
-    const flyLoAddress = "0xd9837d0b546345f2Bd5749C7Ff4Ce5035e0B7828";
+    const flyLoAddress = artistDict["Flying Lotus"];
     const createFlyLo = await fetch(APIURL + "/bio", {
       body: JSON.stringify({ address: flyLoAddress, bio: "Flying Lotus" }),
       method: "POST",
@@ -150,14 +151,12 @@ function OurApp({ address, localContracts, mainnetProvider }) {
     });
     console.log(createFlyLo);
     console.log(addBBR);
-    const flyLoResponse = await fetch(APIURL + "/artist?address=" + flyLoAddress, {
+    await fetch(APIURL + "/artist?address=" + flyLoAddress, {
       method: "GET",
-    })
-      .then(function (result) {
+    }).then(function (result) {
         console.log(result);
         return result.json();
-      })
-      .then(function (result) {
+      }).then(function (result) {
         const getFlyLo = result;
         console.log(getFlyLo);
         const flyLoBio = getFlyLo.bio;
@@ -167,20 +166,16 @@ function OurApp({ address, localContracts, mainnetProvider }) {
         console.log(flyLoSongs);
       });
   };
-  const populateArtist = async () => {
-    const artistResponse = await fetch(APIURL + "/artist?address=" + currentArtistAddress, {
+  const populateArtist = async (artistAddress) => {
+    await fetch(APIURL + "/artist?address=" + artistAddress, {
       method: "GET",
-    })
-      .then(function (result) {
+    }).then(function (result) {
         console.log(result);
         return result.json();
       })
       .then(function (result) {
-        if (result.bio === "No bio available") {
-          setHasAccess(false);
-        } else if (result != null) {
+        if (result != null) {
           const songs = JSON.parse(result.songs).songs;
-          setHasAccess(true);
           console.log(songs);
           var songList = [];
           for (const song of songs) {
@@ -192,8 +187,30 @@ function OurApp({ address, localContracts, mainnetProvider }) {
         }
       });
   };
+  const checkAccess = async (artistAddress) => {
+    await fetch(APIURL + "/artist", {
+	  method: "POST",
+	  body: JSON.stringify({
+	    address: address,
+		artist_address: artistAddress
+	  }),
+	  headers: {"Content-Type": "application/json"}
+	}).then(function (result) {
+	  console.log(result);
+	  return result.json();
+	}).then(function (result) {
+	  console.log(result.msg);
+	  if (result.msg === "No access") {
+	    setHasAccess(false);
+	  }
+	  else {
+		setHasAccess(true);
+	  }
+	})
+  }
   const purchaseAccess = () => {
-    makeCall("transfer", localContracts[selectedContract], [currentArtistAddress, valueAmount]);
+	console.log(currentArtistAddress.substr(2));
+    makeCall("transfer", localContracts[selectedContract], [currentArtistAddress.substr(2), valueAmount]);
   };
 
   return (
@@ -267,17 +284,19 @@ function OurApp({ address, localContracts, mainnetProvider }) {
           <Divider />
           <Button onClick={setStartingConditions}>Click Me To Try Stuff</Button>
           <Button
-            onClick={() => {
-              artistButton("Flying Lotus");
+            onClick={async () => {
+      		  await artistButton("Flying Lotus").then(result => {
+			  	populateArtist(result);
+			  });
             }}
           >
             Flying Lotus
           </Button>
           <h2>Current Artist: {currentArtist}</h2>
           <h2>Current Artist Address: {currentArtistAddress}</h2>
-          <Button onClick={populateArtist(currentArtist)}>Check Access</Button>
+          <Button onClick={async () => {await checkAccess(currentArtistAddress);}}>Check Access</Button>
           <Button onClick={() => purchaseAccess()}>Purchase Access</Button>
-          <h2>{hasAccess ? "has access" : "does not have access"}</h2>
+          <h2>{typeof hasAccess == 'undefined' ? "" : (hasAccess ? "has access" : "does not have access")}</h2>
           <div style={{ margin: 8 }}>
             {/* <Title level={4}>Interact</Title> */}
             <Form

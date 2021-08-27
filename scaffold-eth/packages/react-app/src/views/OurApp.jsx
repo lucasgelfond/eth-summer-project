@@ -17,6 +17,11 @@ function OurApp({ address, localContracts, mainnetProvider }) {
   const [addressBalance, setAddressBalance] = useState();
   const [addressAllowance, setAddressAllowance] = useState();
   const [myAllowanceOnAddress, setMyAllowanceOnAddress] = useState();
+  const songsTest = ["song1", "song2", "song3", "song4", "song5", "song6"];
+  const gridStyle = {
+    width: "33%",
+    textAlign: "center",
+  };
 
   let contractOptions = localContracts ? Object.keys(localContracts) : [];
   const [selectedContract, setSelectedContract] = useState();
@@ -226,6 +231,22 @@ function OurApp({ address, localContracts, mainnetProvider }) {
                 console.log("Failed:", errorInfo);
               }}
             >
+              <Card>
+                {songsTest.map(string => {
+                  return (
+                    <Card.Grid key={string} style={gridStyle}>
+                      {string}
+                    </Card.Grid>
+                  );
+                })}
+                {/* <Card.Grid style={gridStyle}>Test</Card.Grid>
+            <Card.Grid style={gridStyle}>Test</Card.Grid>
+            <Card.Grid style={gridStyle}>Test</Card.Grid>
+            <Card.Grid style={gridStyle}>Test</Card.Grid>
+            <Card.Grid style={gridStyle}>Test</Card.Grid>
+            <Card.Grid style={gridStyle}>Test</Card.Grid> */}
+              </Card>
+
               <Form.Item name="function">
                 {/* <Radio.Group
                   options={["transfer"]} // "approve", "increaseAllowance", "decreaseAllowance", "transferFrom"

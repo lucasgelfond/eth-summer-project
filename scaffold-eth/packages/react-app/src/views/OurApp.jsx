@@ -181,13 +181,13 @@ function OurApp({ address, localContracts, mainnetProvider }) {
         } else if (result != null) {
           const songs = JSON.parse(result.songs).songs;
           setHasAccess(true);
-	      console.log(songs);
-		  var songList = [];
-		  for (const song of songs) {
-			console.log(song);
-			songList.push(song["title"]);
-		  }
-		  console.log(songList);
+          console.log(songs);
+          var songList = [];
+          for (const song of songs) {
+            console.log(song);
+            songList.push(song["title"]);
+          }
+          console.log(songList);
           setSongList(songList);
         }
       });
@@ -276,7 +276,7 @@ function OurApp({ address, localContracts, mainnetProvider }) {
           <h2>Current Artist: {currentArtist}</h2>
           <h2>Current Artist Address: {currentArtistAddress}</h2>
           <Button onClick={populateArtist(currentArtist)}>Check Access</Button>
-          <Button onClick={() => purchaseAccess()}></Button>
+          <Button onClick={() => purchaseAccess()}>Purchase Access</Button>
           <h2>{hasAccess ? "has access" : "does not have access"}</h2>
           <div style={{ margin: 8 }}>
             {/* <Title level={4}>Interact</Title> */}

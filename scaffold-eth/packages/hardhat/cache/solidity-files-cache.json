@@ -1,41 +1,6 @@
 {
   "_format": "hh-sol-cache-1",
   "files": {
-    "/Users/work/Documents/GitHub/eth-summer-project-2/scaffold-eth/packages/hardhat/contracts/Unlimited.sol": {
-      "lastModificationDate": 1630036722041,
-      "sourceName": "contracts/Unlimited.sol",
-      "solcConfig": {
-        "version": "0.6.7",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/token/ERC20/ERC20.sol"
-      ],
-      "versionPragmas": [
-        ">=0.6.0 <0.7.0"
-      ],
-      "artifacts": [
-        "Unlimited"
-      ]
-    },
     "/Users/work/Documents/GitHub/eth-summer-project-2/scaffold-eth/node_modules/@openzeppelin/contracts/token/ERC20/ERC20.sol": {
       "lastModificationDate": 1630036891081,
       "sourceName": "@openzeppelin/contracts/token/ERC20/ERC20.sol",
@@ -204,6 +169,41 @@
       ],
       "artifacts": [
         "Address"
+      ]
+    },
+    "/Users/work/Documents/GitHub/eth-summer-project-2/scaffold-eth/packages/hardhat/contracts/Unlimited.sol": {
+      "lastModificationDate": 1630093636773,
+      "sourceName": "contracts/Unlimited.sol",
+      "solcConfig": {
+        "version": "0.6.7",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/token/ERC20/ERC20.sol"
+      ],
+      "versionPragmas": [
+        ">=0.6.0 <0.7.0"
+      ],
+      "artifacts": [
+        "Unlimited"
       ]
     }
   }

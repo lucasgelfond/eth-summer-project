@@ -1,1 +1,1 @@
-module.exports = ["Burnable","Fixed","Inflating","Unlimited"];
+module.exports = ["Unlimited"];

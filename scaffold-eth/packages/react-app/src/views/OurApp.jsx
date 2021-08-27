@@ -23,7 +23,9 @@ function OurApp({ address, localContracts, mainnetProvider }) {
   const [currentArtist, setCurrentArtist] = useState();
   const [currentArtistAddress, setCurrentArtistAddress] = useState();
   const [hasAccess, setHasAccess] = useState();
+  const [didMount, setDidMount] = useState(true);
   const APIURL = "http://localhost:8080/api";
+  const valueAmount = 0.000001;
 
   const gridStyle = {
     width: "33%",
@@ -35,6 +37,7 @@ function OurApp({ address, localContracts, mainnetProvider }) {
   const [selectedContract, setSelectedContract] = useState();
 
   useEffect(() => {
+    return () => setDidMount(false);
     if (!selectedContract) {
       setSelectedContract(contractOptions[0]);
     }
@@ -167,17 +170,23 @@ function OurApp({ address, localContracts, mainnetProvider }) {
   const populateArtist = async () => {
     const artistResponse = await fetch(APIURL + "/artist?address=" + currentArtistAddress, {
       method: "GET",
-    }).then(function (result) {
-      const data = result.json();
-      console.log(data);
-      if (data.bio == "No bio available") {
-        setHasAccess(false);
-      } else if (data != null) {
-        const songs = JSON.parse(data.songs).songs;
-        setHasAccess(true);
-        setSongList(songs);
-      }
-    });
+    })
+      .then(function (result) {
+        console.log(result);
+        return result.json();
+      })
+      .then(function (result) {
+        if (result.bio == "No bio available") {
+          setHasAccess(false);
+        } else if (result != null) {
+          const songs = JSON.parse(result.songs).songs;
+          setHasAccess(true);
+          setSongList(songs);
+        }
+      });
+  };
+  const purchaseAccess = () => {
+    makeCall("transfer", localContracts[selectedContract], [currentArtistAddress, valueAmount]);
   };
 
   return (
@@ -260,6 +269,7 @@ function OurApp({ address, localContracts, mainnetProvider }) {
           <h2>Current Artist: {currentArtist}</h2>
           <h2>Current Artist Address: {currentArtistAddress}</h2>
           <Button onClick={populateArtist(currentArtist)}>Check Access</Button>
+          <Button onClick={() => purchaseAccess()}></Button>
           <h2>{hasAccess ? "has access" : "does not have access"}</h2>
           <div style={{ margin: 8 }}>
             {/* <Title level={4}>Interact</Title> */}
@@ -274,7 +284,7 @@ function OurApp({ address, localContracts, mainnetProvider }) {
               <Card>
                 {songList.map(string => {
                   return (
-                    <Card.Grid key={string} style={gridStyle}>
+                    <Card.Grid key={string + Math.random()} style={gridStyle}>
                       {string}
                     </Card.Grid>
                   );

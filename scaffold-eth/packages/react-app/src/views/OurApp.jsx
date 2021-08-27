@@ -18,10 +18,18 @@ function OurApp({ address, localContracts, mainnetProvider }) {
   const [addressAllowance, setAddressAllowance] = useState();
   const [myAllowanceOnAddress, setMyAllowanceOnAddress] = useState();
   const songsTest = ["song1", "song2", "song3", "song4", "song5", "song6"];
+
+  const [songList, setSongList] = useState(songsTest);
+  const [currentArtist, setCurrentArtist] = useState();
+  const [currentArtistAddress, setCurrentArtistAddress] = useState();
+  const [hasAccess, setHasAccess] = useState();
+  const APIURL = "http://localhost:8080/api";
+
   const gridStyle = {
     width: "33%",
     textAlign: "center",
   };
+  const artistDict = { "Flying Lotus": "0xd9837d0b546345f2Bd5749C7Ff4Ce5035e0B7828" };
 
   let contractOptions = localContracts ? Object.keys(localContracts) : [];
   const [selectedContract, setSelectedContract] = useState();
@@ -49,6 +57,10 @@ function OurApp({ address, localContracts, mainnetProvider }) {
       return result;
     }
   };
+  function artistButton(artist) {
+    setCurrentArtist(artist);
+    setCurrentArtistAddress(artistDict[artist]);
+  }
 
   const getErc20Info = async () => {
     if (selectedContract) {
@@ -116,9 +128,9 @@ function OurApp({ address, localContracts, mainnetProvider }) {
       });
     }
   };
+  const lookupArtist = async artist => {};
   const setStartingConditions = async () => {
     const flyLoAddress = "0xd9837d0b546345f2Bd5749C7Ff4Ce5035e0B7828";
-    const APIURL = "http://localhost:8080/api";
     const createFlyLo = await fetch(APIURL + "/bio", {
       body: JSON.stringify({ address: flyLoAddress, bio: "Flying Lotus" }),
       method: "POST",
@@ -137,17 +149,34 @@ function OurApp({ address, localContracts, mainnetProvider }) {
     console.log(addBBR);
     const flyLoResponse = await fetch(APIURL + "/artist?address=" + flyLoAddress, {
       method: "GET",
+    })
+      .then(function (result) {
+        console.log(result);
+        return result.json();
+      })
+      .then(function (result) {
+        const getFlyLo = result;
+        console.log(getFlyLo);
+        const flyLoBio = getFlyLo.bio;
+        console.log(getFlyLo.songs);
+        const flyLoSongs = JSON.parse(getFlyLo.songs).songs;
+        console.log(flyLoBio);
+        console.log(flyLoSongs);
+      });
+  };
+  const populateArtist = async () => {
+    const artistResponse = await fetch(APIURL + "/artist?address=" + currentArtistAddress, {
+      method: "GET",
     }).then(function (result) {
-      console.log(result);
-      return result.json();
-	}).then(function(result) {
-	  const getFlyLo = result;
-      console.log(getFlyLo);
-      const flyLoBio = getFlyLo.bio;
-	  console.log(getFlyLo.songs);
-      const flyLoSongs = JSON.parse(getFlyLo.songs).songs;
-      console.log(flyLoBio);
-      console.log(flyLoSongs);
+      const data = result.json();
+      console.log(data);
+      if (data.bio == "No bio available") {
+        setHasAccess(false);
+      } else if (data != null) {
+        const songs = JSON.parse(data.songs).songs;
+        setHasAccess(true);
+        setSongList(songs);
+      }
     });
   };
 
@@ -221,6 +250,17 @@ function OurApp({ address, localContracts, mainnetProvider }) {
           ) : null}
           <Divider />
           <Button onClick={setStartingConditions}>Click Me To Try Stuff</Button>
+          <Button
+            onClick={() => {
+              artistButton("Flying Lotus");
+            }}
+          >
+            Flying Lotus
+          </Button>
+          <h2>Current Artist: {currentArtist}</h2>
+          <h2>Current Artist Address: {currentArtistAddress}</h2>
+          <Button onClick={populateArtist(currentArtist)}>Check Access</Button>
+          <h2>{hasAccess ? "has access" : "does not have access"}</h2>
           <div style={{ margin: 8 }}>
             {/* <Title level={4}>Interact</Title> */}
             <Form
@@ -232,7 +272,7 @@ function OurApp({ address, localContracts, mainnetProvider }) {
               }}
             >
               <Card>
-                {songsTest.map(string => {
+                {songList.map(string => {
                   return (
                     <Card.Grid key={string} style={gridStyle}>
                       {string}

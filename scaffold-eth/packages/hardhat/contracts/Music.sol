@@ -2,7 +2,7 @@ pragma solidity >=0.6.0 <0.7.0;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-contract Unlimited is ERC20 {
+contract Music is ERC20 {
 
     constructor() ERC20("MusicToken", "MUSC") public {
     }

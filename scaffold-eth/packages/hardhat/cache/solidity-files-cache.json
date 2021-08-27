@@ -171,9 +171,9 @@
         "Address"
       ]
     },
-    "/Users/work/Documents/GitHub/eth-summer-project-2/scaffold-eth/packages/hardhat/contracts/Unlimited.sol": {
-      "lastModificationDate": 1630093636773,
-      "sourceName": "contracts/Unlimited.sol",
+    "/Users/work/Documents/GitHub/eth-summer-project-2/scaffold-eth/packages/hardhat/contracts/Music.sol": {
+      "lastModificationDate": 1630108058239,
+      "sourceName": "contracts/Music.sol",
       "solcConfig": {
         "version": "0.6.7",
         "settings": {
@@ -203,7 +203,7 @@
         ">=0.6.0 <0.7.0"
       ],
       "artifacts": [
-        "Unlimited"
+        "Music"
       ]
     }
   }

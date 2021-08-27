@@ -31,7 +31,7 @@ def update_db(current_block, collection):
     for txn in event_filter.get_all_entries():
         receipt = w3.eth.waitForTransactionReceipt(txn['transactionHash'])
         result = transaction.processReceipt(receipt)[0]['args']
-        if result['value'] >= 1e18 and result['from'][2:] != "0" * 40:
+        if result['value'] >= 1e10 and result['from'][2:] != "0" * 40:
             payer = result['from'].lower()
             receiver = result['to'].lower()
             print(payer, receiver)
@@ -57,7 +57,7 @@ def update_db_paylist(current_block, paylist):
     for txn in event_filter.get_all_entries():
         receipt = w3.eth.waitForTransactionReceipt(txn['transactionHash'])
         result = transaction.processReceipt(receipt)[0]['args']
-        if result['value'] >= 1e18 and result['from'][2:] != "0" * 40:
+        if result['value'] >= 1e10 and result['from'][2:] != "0" * 40:
             payer = result['from'].lower()
             receiver = result['to'].lower()
             found = False

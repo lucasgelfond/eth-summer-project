@@ -195,13 +195,8 @@ class Artist(Resource):
             address = args['address'].lower()
             artist_address = args['artist_address'].lower()
             if not has_access(address, artist_address):
-                return "Need to purchase access", 401
-            artist = find_one(all_users, {'address': artist_address})
-            if artist is None:
-                return {"bio": "No Bio Available", "songs": json.dumps({"songs": []})}, 200
-            bio = artist.get("bio", "No Bio Available")
-            songs = get_song_list(artist_address)
-            return {"bio": bio, "songs": songs}, 200
+                return {"msg": "No access"}, 200
+            return {"msg": "Yes access"}, 200
         except Exception as e:
             print(e)
             return "Invalid request", 400

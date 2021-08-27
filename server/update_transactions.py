@@ -20,12 +20,12 @@ transaction = contract.events.Transfer()
 
 contract_bytes = decode_hex(contract_address)
 
-def update_db(current_block, collection):
+def update_db(previous_block, collection):
     bn = w3.eth.block_number
-    if bn == current_block:
+    if bn == previous_block:
         return bn
     event_filter = transaction.createFilter(
-        fromBlock = current_block + 1,
+        fromBlock = previous_block + 1,
         toBlock = bn
     )
     for txn in event_filter.get_all_entries():

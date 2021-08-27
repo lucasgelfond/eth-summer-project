@@ -176,12 +176,19 @@ function OurApp({ address, localContracts, mainnetProvider }) {
         return result.json();
       })
       .then(function (result) {
-        if (result.bio == "No bio available") {
+        if (result.bio === "No bio available") {
           setHasAccess(false);
         } else if (result != null) {
           const songs = JSON.parse(result.songs).songs;
           setHasAccess(true);
-          setSongList(songs);
+	      console.log(songs);
+		  var songList = [];
+		  for (const song of songs) {
+			console.log(song);
+			songList.push(song["title"]);
+		  }
+		  console.log(songList);
+          setSongList(songList);
         }
       });
   };

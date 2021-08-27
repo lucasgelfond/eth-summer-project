@@ -4,7 +4,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract Unlimited is ERC20 {
 
-    constructor() ERC20("Unlimited", "UNLI") public {
+    constructor() ERC20("MusicToken", "MUSC") public {
     }
 
     function mintTokens() public {

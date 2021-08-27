@@ -134,9 +134,12 @@ function OurApp({ address, localContracts, mainnetProvider }) {
       method: "GET",
     }).then(function (result) {
       console.log(result);
-      const getFlyLo = result.json();
+      return result.json();
+	}).then(function(result) {
+	  const getFlyLo = result;
       console.log(getFlyLo);
       const flyLoBio = getFlyLo.bio;
+	  console.log(getFlyLo.songs);
       const flyLoSongs = JSON.parse(getFlyLo.songs).songs;
       console.log(flyLoBio);
       console.log(flyLoSongs);

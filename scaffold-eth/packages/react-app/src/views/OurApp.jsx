@@ -111,6 +111,37 @@ function OurApp({ address, localContracts, mainnetProvider }) {
       });
     }
   };
+  const setStartingConditions = async () => {
+    const flyLoAddress = "0xd9837d0b546345f2Bd5749C7Ff4Ce5035e0B7828";
+    const APIURL = "http://localhost:8080/api";
+    const createFlyLo = await fetch(APIURL + "/bio", {
+      body: JSON.stringify({ address: flyLoAddress, bio: "Flying Lotus" }),
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    });
+    const addBBR = await fetch(APIURL + "/create", {
+      body: JSON.stringify({
+        address: flyLoAddress,
+        title: "Black Balloons Reprise",
+        lyrics: "test test",
+      }),
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    });
+    console.log(createFlyLo);
+    console.log(addBBR);
+    const flyLoResponse = await fetch(APIURL + "/artist?address=" + flyLoAddress, {
+      method: "GET",
+    }).then(function (result) {
+      console.log(result);
+      const getFlyLo = result.json();
+      console.log(getFlyLo);
+      const flyLoBio = getFlyLo.bio;
+      const flyLoSongs = JSON.parse(getFlyLo.songs).songs;
+      console.log(flyLoBio);
+      console.log(flyLoSongs);
+    });
+  };
 
   return (
     <Card style={{ maxWidth: 600, width: "100%", margin: "auto" }}>
@@ -181,8 +212,9 @@ function OurApp({ address, localContracts, mainnetProvider }) {
             </Button>
           ) : null}
           <Divider />
+          <Button onClick={setStartingConditions}>Click Me To Try Stuff</Button>
           <div style={{ margin: 8 }}>
-            <Title level={4}>Interact</Title>
+            {/* <Title level={4}>Interact</Title> */}
             <Form
               form={updateForm}
               layout="horizontal"
@@ -192,15 +224,15 @@ function OurApp({ address, localContracts, mainnetProvider }) {
               }}
             >
               <Form.Item name="function">
-                <Radio.Group
-                  options={["transfer", "approve", "increaseAllowance", "decreaseAllowance", "transferFrom"]}
+                {/* <Radio.Group
+                  options={["transfer"]} // "approve", "increaseAllowance", "decreaseAllowance", "transferFrom"
                   optionType="button"
                   onChange={e => {
                     console.log(e);
                     setUpdateFormFunction(e.target.value);
                   }}
                   defaultValue={defaultUpdateFunction}
-                />
+                /> */}
               </Form.Item>
               {updateFormFunction === "transferFrom" ? (
                 <Form.Item
@@ -224,7 +256,7 @@ function OurApp({ address, localContracts, mainnetProvider }) {
             </Form>
           </div>
           <Divider />
-          <div style={{ margin: 8 }}>
+          {/* <div style={{ margin: 8 }}>
             <Title level={4}>Address Info</Title>
             <Form
               form={addressInfoForm}
@@ -248,7 +280,7 @@ function OurApp({ address, localContracts, mainnetProvider }) {
               <p>{`Address Allowance on my ${selectedContract} tokens: ${addressAllowance}`}</p>
             ) : null}
             {myAllowanceOnAddress ? <p>{`My Allowance on address: ${myAllowanceOnAddress}`}</p> : null}
-          </div>
+          </div> */}
         </>
       ) : null}
     </Card>

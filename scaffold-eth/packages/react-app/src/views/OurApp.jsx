@@ -132,6 +132,17 @@ function OurApp({ address, localContracts, mainnetProvider }) {
       });
     }
   };
+  const addSong = async song => {
+    const addSong = await fetch(APIURL + "/create", {
+      body: JSON.stringify({
+        address: currentArtistAddress,
+        title: song,
+        lyrics: "test test",
+      }),
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    });
+  };
   const lookupArtist = async artist => {};
   const setStartingConditions = async () => {
     const flyLoAddress = artistDict["Flying Lotus"];
@@ -140,17 +151,9 @@ function OurApp({ address, localContracts, mainnetProvider }) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
     });
-    const addBBR = await fetch(APIURL + "/create", {
-      body: JSON.stringify({
-        address: flyLoAddress,
-        title: "Black Balloons Reprise",
-        lyrics: "test test",
-      }),
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-    });
+    addSong("Black Baloons Reprise");
+
     console.log(createFlyLo);
-    console.log(addBBR);
     await fetch(APIURL + "/artist?address=" + flyLoAddress, {
       method: "GET",
     })

@@ -309,61 +309,22 @@ function OurApp({ address, localContracts, mainnetProvider }) {
           <h2>{typeof hasAccess == "undefined" ? "" : hasAccess ? "has access" : "does not have access"}</h2>
           <div style={{ margin: 8 }}>
             {/* <Title level={4}>Interact</Title> */}
-            <Form
-              form={updateForm}
-              layout="horizontal"
-              onFinish={executeUpdateFunction}
-              onFinishFailed={errorInfo => {
-                console.log("Failed:", errorInfo);
-              }}
-            >
-              <Card>
-                {songList.map(string => {
-                  return (
-                    <Card.Grid key={string + Math.random()} style={gridStyle}>
-                      {string}
-                    </Card.Grid>
-                  );
-                })}
-                {/* <Card.Grid style={gridStyle}>Test</Card.Grid>
+
+            <Card>
+              {songList.map(string => {
+                return (
+                  <Card.Grid key={string + Math.random()} style={gridStyle}>
+                    {string}
+                  </Card.Grid>
+                );
+              })}
+              {/* <Card.Grid style={gridStyle}>Test</Card.Grid>
             <Card.Grid style={gridStyle}>Test</Card.Grid>
             <Card.Grid style={gridStyle}>Test</Card.Grid>
             <Card.Grid style={gridStyle}>Test</Card.Grid>
             <Card.Grid style={gridStyle}>Test</Card.Grid>
             <Card.Grid style={gridStyle}>Test</Card.Grid> */}
-              </Card>
-
-              <Form.Item name="function">
-                {/* <Radio.Group
-                  options={["transfer"]} // "approve", "increaseAllowance", "decreaseAllowance", "transferFrom"
-                  optionType="button"
-                  onChange={e => {
-                    console.log(e);
-                    setUpdateFormFunction(e.target.value);
-                  }}
-                  defaultValue={defaultUpdateFunction}
-                /> */}
-              </Form.Item>
-              {updateFormFunction === "transferFrom" ? (
-                <Form.Item
-                  name="fromAddress"
-                  rules={[{ required: updateFormFunction === "transferFrom", message: "Address to transfer from" }]}
-                >
-                  <AddressInput placeholder="fromAddress" ensProvider={mainnetProvider} />
-                </Form.Item>
-              ) : null}
-              <Form.Item name="toAddress" rules={[{ required: true, message: "Please enter an address" }]}>
-                <AddressInput placeholder="address" ensProvider={mainnetProvider} />
-              </Form.Item>
-              <Form.Item name="amount" rules={[{ required: true, message: `Set the value to ${updateFormFunction}` }]}>
-                <Input placeholder="amount" />
-              </Form.Item>
-              <Form.Item>
-                <Button type="primary" htmlType="submit">
-                  Submit
-                </Button>
-              </Form.Item>
-            </Form>
+            </Card>
           </div>
           <Divider />
           {/* <div style={{ margin: 8 }}>

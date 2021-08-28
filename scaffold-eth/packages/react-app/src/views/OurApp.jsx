@@ -143,17 +143,20 @@ function OurApp({ address, localContracts, mainnetProvider }) {
       headers: { "Content-Type": "application/json" },
     });
   };
-  const lookupArtist = async artist => {};
-  const setStartingConditions = async () => {
-    const flyLoAddress = artistDict["Flying Lotus"];
-    const createFlyLo = await fetch(APIURL + "/bio", {
-      body: JSON.stringify({ address: flyLoAddress, bio: "Flying Lotus" }),
+
+  const createArtist = async artist => {
+    const address = artistDict[artist];
+    const artistPOST = await fetch(APIURL + "/bio", {
+      body: JSON.stringify({ address: address, bio: artist }),
       method: "POST",
       headers: { "Content-Type": "application/json" },
     });
+  };
+  const lookupArtist = async artist => {};
+  const setStartingConditions = async () => {
+    createArtist("Flying Lotus");
     addSong("Black Baloons Reprise");
 
-    console.log(createFlyLo);
     await fetch(APIURL + "/artist?address=" + flyLoAddress, {
       method: "GET",
     })

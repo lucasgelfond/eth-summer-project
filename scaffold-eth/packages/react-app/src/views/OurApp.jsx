@@ -339,6 +339,15 @@ function OurApp({ address, localContracts, mainnetProvider }) {
           >
             Flying Lotus
           </Button>
+          <Button
+            onClick={async () => {
+              await artistButton("Bjork").then(result => {
+                populateArtist(result);
+              });
+            }}
+          >
+            Bjork
+          </Button>
           <h2>Current Artist: {currentArtist}</h2>
           <h2>Current Artist Address: {currentArtistAddress}</h2>
           <Button

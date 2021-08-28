@@ -31,7 +31,7 @@ function OurApp({ address, localContracts, mainnetProvider }) {
     width: "33%",
     textAlign: "center",
   };
-  const artistDict = { "Flying Lotus": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266" };
+  const artistDict = {};
 
   let contractOptions = localContracts ? Object.keys(localContracts) : [];
   const [selectedContract, setSelectedContract] = useState();
@@ -144,8 +144,8 @@ function OurApp({ address, localContracts, mainnetProvider }) {
     });
   };
 
-  const createArtist = async artist => {
-    const address = artistDict[artist];
+  const createArtist = async (artist, address) => {
+    artistDict[artist] = address;
     setCurrentArtist(artist);
     setCurrentArtistAddress(address);
     const artistPOST = await fetch(APIURL + "/bio", {
@@ -155,8 +155,44 @@ function OurApp({ address, localContracts, mainnetProvider }) {
     });
   };
   const setStartingConditions = async () => {
-    createArtist("Flying Lotus");
+    createArtist("Flying Lotus", "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266");
     addSong("Black Baloons Reprise");
+    addSong("Never Catch Me");
+    addSong("Getting There");
+    addSong("Computer Face//Pure Being");
+    addSong("Do The Astral Plane");
+
+    createArtist("Bjork", "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266");
+    addSong("Crying");
+    addSong("Joga");
+    addSong("Like Someone in Love");
+    addSong("Unravel");
+    addSong("There's More to Life Than This");
+    addSong("Like Someone in Love");
+
+    createArtist("Frank Ocean", "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266");
+    addSong("At Your Best (You Are Love");
+    addSong("Dear April");
+    addSong("Biking");
+    addSong("Novacane");
+    addSong("Super Rich Kids");
+    addSong("Futura Free");
+
+    createArtist("Olivia Rodrigo", "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266");
+    addSong("drivers license");
+    addSong("good 4 u");
+    addSong("traitor");
+    addSong("deja vu");
+    addSong("happier");
+    addSong("favorite crime");
+
+    createArtist("Solange", "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266");
+    addSong("Losing You");
+    addSong("Cranes in the Sky");
+    addSong("Almeda");
+    addSong("T.O.N.Y");
+    addSong("Binz");
+    addSong("Borderline (An Ode to Self Care)");
 
     await fetch(APIURL + "/artist?address=" + artistDict["Flying Lotus"], {
       method: "GET",

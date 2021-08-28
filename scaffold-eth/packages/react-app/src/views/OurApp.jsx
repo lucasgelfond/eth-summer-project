@@ -152,12 +152,11 @@ function OurApp({ address, localContracts, mainnetProvider }) {
       headers: { "Content-Type": "application/json" },
     });
   };
-  const lookupArtist = async artist => {};
   const setStartingConditions = async () => {
     createArtist("Flying Lotus");
     addSong("Black Baloons Reprise");
 
-    await fetch(APIURL + "/artist?address=" + flyLoAddress, {
+    await fetch(APIURL + "/artist?address=" + artistDict["Flying Lotus"], {
       method: "GET",
     })
       .then(function (result) {

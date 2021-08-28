@@ -60,11 +60,11 @@ function OurApp({ address, localContracts, mainnetProvider }) {
       return result;
     }
   };
-  const artistButton = async(artist) => {
+  const artistButton = async artist => {
     setCurrentArtist(artist);
     setCurrentArtistAddress(artistDict[artist]);
-  	return artistDict[artist];
-  }
+    return artistDict[artist];
+  };
 
   const getErc20Info = async () => {
     if (selectedContract) {
@@ -153,10 +153,12 @@ function OurApp({ address, localContracts, mainnetProvider }) {
     console.log(addBBR);
     await fetch(APIURL + "/artist?address=" + flyLoAddress, {
       method: "GET",
-    }).then(function (result) {
+    })
+      .then(function (result) {
         console.log(result);
         return result.json();
-      }).then(function (result) {
+      })
+      .then(function (result) {
         const getFlyLo = result;
         console.log(getFlyLo);
         const flyLoBio = getFlyLo.bio;
@@ -166,10 +168,11 @@ function OurApp({ address, localContracts, mainnetProvider }) {
         console.log(flyLoSongs);
       });
   };
-  const populateArtist = async (artistAddress) => {
+  const populateArtist = async artistAddress => {
     await fetch(APIURL + "/artist?address=" + artistAddress, {
       method: "GET",
-    }).then(function (result) {
+    })
+      .then(function (result) {
         console.log(result);
         return result.json();
       })
@@ -187,29 +190,30 @@ function OurApp({ address, localContracts, mainnetProvider }) {
         }
       });
   };
-  const checkAccess = async (artistAddress) => {
+  const checkAccess = async artistAddress => {
     await fetch(APIURL + "/artist", {
-	  method: "POST",
-	  body: JSON.stringify({
-	    address: address,
-		artist_address: artistAddress
-	  }),
-	  headers: {"Content-Type": "application/json"}
-	}).then(function (result) {
-	  console.log(result);
-	  return result.json();
-	}).then(function (result) {
-	  console.log(result.msg);
-	  if (result.msg === "No access") {
-	    setHasAccess(false);
-	  }
-	  else {
-		setHasAccess(true);
-	  }
-	})
-  }
+      method: "POST",
+      body: JSON.stringify({
+        address: address,
+        artist_address: artistAddress,
+      }),
+      headers: { "Content-Type": "application/json" },
+    })
+      .then(function (result) {
+        console.log(result);
+        return result.json();
+      })
+      .then(function (result) {
+        console.log(result.msg);
+        if (result.msg === "No access") {
+          setHasAccess(false);
+        } else {
+          setHasAccess(true);
+        }
+      });
+  };
   const purchaseAccess = () => {
-	console.log(currentArtistAddress.substr(2));
+    console.log(currentArtistAddress.substr(2));
     makeCall("transfer", localContracts[selectedContract], [currentArtistAddress.substr(2), valueAmount]);
   };
 
@@ -282,21 +286,27 @@ function OurApp({ address, localContracts, mainnetProvider }) {
             </Button>
           ) : null}
           <Divider />
-          <Button onClick={setStartingConditions}>Click Me To Try Stuff</Button>
+          <Button onClick={setStartingConditions}>Load Demo</Button>
           <Button
             onClick={async () => {
-      		  await artistButton("Flying Lotus").then(result => {
-			  	populateArtist(result);
-			  });
+              await artistButton("Flying Lotus").then(result => {
+                populateArtist(result);
+              });
             }}
           >
             Flying Lotus
           </Button>
           <h2>Current Artist: {currentArtist}</h2>
           <h2>Current Artist Address: {currentArtistAddress}</h2>
-          <Button onClick={async () => {await checkAccess(currentArtistAddress);}}>Check Access</Button>
+          <Button
+            onClick={async () => {
+              await checkAccess(currentArtistAddress);
+            }}
+          >
+            Check Access
+          </Button>
           <Button onClick={() => purchaseAccess()}>Purchase Access</Button>
-          <h2>{typeof hasAccess == 'undefined' ? "" : (hasAccess ? "has access" : "does not have access")}</h2>
+          <h2>{typeof hasAccess == "undefined" ? "" : hasAccess ? "has access" : "does not have access"}</h2>
           <div style={{ margin: 8 }}>
             {/* <Title level={4}>Interact</Title> */}
             <Form

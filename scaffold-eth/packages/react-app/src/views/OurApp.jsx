@@ -348,6 +348,33 @@ function OurApp({ address, localContracts, mainnetProvider }) {
           >
             Bjork
           </Button>
+                 <Button
+            onClick={async () => {
+              await artistButton("Olivia Rodrigo").then(result => {
+                populateArtist(result);
+              });
+            }}
+          >
+            Olivia Rodrigo
+          </Button>
+           <Button
+            onClick={async () => {
+              await artistButton("Frank Ocean").then(result => {
+                populateArtist(result);
+              });
+            }}
+          >
+            Frank Ocean
+          </Button>
+                 <Button
+            onClick={async () => {
+              await artistButton("Bjork").then(result => {
+                populateArtist(result);
+              });
+            }}
+          >
+            
+          </Button>
           <h2>Current Artist: {currentArtist}</h2>
           <h2>Current Artist Address: {currentArtistAddress}</h2>
           <Button

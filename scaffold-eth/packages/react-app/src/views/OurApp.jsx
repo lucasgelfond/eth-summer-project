@@ -29,9 +29,10 @@ function OurApp({ address, localContracts, mainnetProvider }) {
 
   const gridStyle = {
     width: "33%",
+    height: 150,
     textAlign: "center",
   };
-  const artistDict = {};
+  const artistDict = {"Flying Lotus": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266", "Bjork": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" };
 
   let contractOptions = localContracts ? Object.keys(localContracts) : [];
   const [selectedContract, setSelectedContract] = useState();
@@ -63,6 +64,9 @@ function OurApp({ address, localContracts, mainnetProvider }) {
   const artistButton = async artist => {
     setCurrentArtist(artist);
     setCurrentArtistAddress(artistDict[artist]);
+    console.log(artist);
+    console.log(artistDict);
+    console.log(currentArtist);
     return artistDict[artist];
   };
 
@@ -132,10 +136,10 @@ function OurApp({ address, localContracts, mainnetProvider }) {
       });
     }
   };
-  const addSong = async song => {
+  const addSong = async (song, artistAddress) => {
     const addSong = await fetch(APIURL + "/create", {
       body: JSON.stringify({
-        address: currentArtistAddress,
+        address: artistAddress,
         title: song,
         lyrics: "test test",
       }),
@@ -145,9 +149,6 @@ function OurApp({ address, localContracts, mainnetProvider }) {
   };
 
   const createArtist = async (artist, address) => {
-    artistDict[artist] = address;
-    setCurrentArtist(artist);
-    setCurrentArtistAddress(address);
     const artistPOST = await fetch(APIURL + "/bio", {
       body: JSON.stringify({ address: address, bio: artist }),
       method: "POST",
@@ -156,19 +157,19 @@ function OurApp({ address, localContracts, mainnetProvider }) {
   };
   const setStartingConditions = async () => {
     createArtist("Flying Lotus", "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266");
-    addSong("Black Baloons Reprise");
-    addSong("Never Catch Me");
-    addSong("Getting There");
-    addSong("Computer Face//Pure Being");
-    addSong("Do The Astral Plane");
+    addSong("Black Baloons Reprise", "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266");
+    addSong("Never Catch Me", "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266");
+    addSong("Getting There", "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266");
+    addSong("Computer Face//Pure Being", "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266");
+    addSong("Do The Astral Plane", "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266");
 
-    createArtist("Bjork", "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266");
-    addSong("Crying");
-    addSong("Joga");
-    addSong("Like Someone in Love");
-    addSong("Unravel");
-    addSong("There's More to Life Than This");
-    addSong("Like Someone in Love");
+    createArtist("Bjork", "0x70997970C51812dc3A010C7d01b50e0d17dc79C8");
+    addSong("Crying", "0x70997970C51812dc3A010C7d01b50e0d17dc79C8");
+    addSong("Joga", "0x70997970C51812dc3A010C7d01b50e0d17dc79C8");
+    addSong("Like Someone in Love", "0x70997970C51812dc3A010C7d01b50e0d17dc79C8");
+    addSong("Unravel", "0x70997970C51812dc3A010C7d01b50e0d17dc79C8");
+    addSong("There's More to Life Than This", "0x70997970C51812dc3A010C7d01b50e0d17dc79C8");
+    addSong("Like Someone in Love", "0x70997970C51812dc3A010C7d01b50e0d17dc79C8");
 
     createArtist("Frank Ocean", "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266");
     addSong("At Your Best (You Are Love");
@@ -212,6 +213,7 @@ function OurApp({ address, localContracts, mainnetProvider }) {
       });
   };
   const populateArtist = async artistAddress => {
+    console.log(artistAddress);
     await fetch(APIURL + "/artist?address=" + artistAddress, {
       method: "GET",
     })
@@ -333,7 +335,7 @@ function OurApp({ address, localContracts, mainnetProvider }) {
           <Button
             onClick={async () => {
               await artistButton("Flying Lotus").then(result => {
-                populateArtist(result);
+                populateArtist(artistDict["Flying Lotus"]);
               });
             }}
           >
@@ -342,7 +344,7 @@ function OurApp({ address, localContracts, mainnetProvider }) {
           <Button
             onClick={async () => {
               await artistButton("Bjork").then(result => {
-                populateArtist(result);
+                populateArtist(artistDict["Bjork"]);
               });
             }}
           >

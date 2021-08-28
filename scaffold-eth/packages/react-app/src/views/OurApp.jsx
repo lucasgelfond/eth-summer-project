@@ -146,6 +146,8 @@ function OurApp({ address, localContracts, mainnetProvider }) {
 
   const createArtist = async artist => {
     const address = artistDict[artist];
+    setCurrentArtist(artist);
+    setCurrentArtistAddress(address);
     const artistPOST = await fetch(APIURL + "/bio", {
       body: JSON.stringify({ address: address, bio: artist }),
       method: "POST",
